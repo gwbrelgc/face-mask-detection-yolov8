@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Face Mask Detection — YOLOv8</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #242836;
+    --primary: #6c8cff;
+    --primary-soft: rgba(108,140,255,0.12);
+    --accent-green: #4ade80;
+    --accent-red: #f87171;
+    --accent-yellow: #fbbf24;
+    --text: #e8eaed;
+    --text-dim: #9ca3af;
+    --text-bright: #ffffff;
+    --border: #2d3248;
+    --slide-w: 960px;
+    --slide-h: 540px;
+  }
+
+  html { font-size: 16px; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #000;
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* SLIDE CONTAINER */
+  .deck { position: relative; width: var(--slide-w); height: var(--slide-h); }
+
+  .slide {
+    position: absolute; inset: 0;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 40px 48px;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .slide.active { display: flex; }
+
+  /* TYPOGRAPHY */
+  .slide-number {
+    position: absolute; top: 16px; right: 24px;
+    font-size: 12px; color: var(--text-dim); font-weight: 500;
+  }
+  .section-tag {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--primary); margin-bottom: 8px;
+  }
+  h1 { font-size: 32px; font-weight: 800; color: var(--text-bright); line-height: 1.15; }
+  h2 { font-size: 24px; font-weight: 700; color: var(--text-bright); line-height: 1.2; margin-bottom: 16px; }
+  h3 { font-size: 16px; font-weight: 600; color: var(--text-bright); margin-bottom: 8px; }
+  p, li { font-size: 14px; line-height: 1.6; color: var(--text); }
+  li { margin-bottom: 4px; }
+  ul { padding-left: 18px; }
+  .subtitle { font-size: 16px; color: var(--text-dim); font-weight: 400; margin-top: 8px; }
+  .small { font-size: 12px; color: var(--text-dim); }
+  .highlight { color: var(--primary); font-weight: 600; }
+  .green { color: var(--accent-green); }
+  .red { color: var(--accent-red); }
+  .yellow { color: var(--accent-yellow); }
+
+  /* LAYOUTS */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; flex: 1; align-items: start; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; flex: 1; }
+  .content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    text-align: center;
+  }
+  .stat-card .value { font-size: 28px; font-weight: 800; color: var(--primary); }
+  .stat-card .label { font-size: 11px; color: var(--text-dim); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 8px 10px; font-weight: 600; color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid var(--border); }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+
+  /* IMAGES */
+  .img-container {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .img-container img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+  /* BARS */
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .bar-label { width: 160px; font-size: 12px; font-weight: 500; text-align: right; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 22px; background: var(--surface2); border-radius: 4px; overflow: hidden; position: relative; }
+  .bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 700; color: var(--bg); }
+  .bar-value { font-size: 12px; font-weight: 600; width: 48px; flex-shrink: 0; }
+
+  /* PIPELINE */
+  .pipeline { display: flex; align-items: center; gap: 6px; justify-content: center; flex-wrap: wrap; }
+  .pipe-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    min-width: 90px;
+  }
+  .pipe-step .icon { font-size: 20px; margin-bottom: 4px; }
+  .pipe-arrow { color: var(--text-dim); font-size: 18px; }
+
+  /* NAVIGATION */
+  .nav {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 30px; padding: 8px 20px; z-index: 100;
+  }
+  .nav button {
+    background: none; border: none; color: var(--text-dim); cursor: pointer;
+    font-size: 18px; padding: 4px 8px; border-radius: 6px; transition: all 0.15s;
+  }
+  .nav button:hover { color: var(--text-bright); background: var(--surface2); }
+  .nav .counter { font-size: 13px; color: var(--text-dim); font-weight: 500; min-width: 60px; text-align: center; }
+
+  /* COVER */
+  .cover { justify-content: center; align-items: center; text-align: center; }
+  .cover h1 { font-size: 36px; }
+  .cover .subtitle { font-size: 18px; margin-top: 12px; }
+  .cover .badge {
+    display: inline-block; background: var(--primary-soft);
+    color: var(--primary); font-size: 12px; font-weight: 700;
+    padding: 6px 16px; border-radius: 20px; margin-bottom: 16px;
+    text-transform: uppercase; letter-spacing: 2px;
+  }
+  .divider { width: 60px; height: 3px; background: var(--primary); border-radius: 2px; margin: 16px auto; }
+
+  /* ARCH DIAGRAM */
+  .arch-box {
+    display: flex; gap: 3px; align-items: stretch; margin: 12px 0; height: 60px;
+  }
+  .arch-block {
+    flex: 1; border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: var(--bg); text-align: center; padding: 4px;
+  }
+
+  .footer-note {
+    position: absolute; bottom: 16px; left: 48px; right: 48px;
+    font-size: 11px; color: var(--text-dim); text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- ==================== SLIDE 1: COVER ==================== -->
+<div class="slide cover active">
+  <div class="badge">Visão Computacional</div>
+  <h1>Face Mask Detection</h1>
+  <p class="subtitle">Detecção de Máscaras Faciais com YOLOv8 e Deep Learning</p>
+  <div class="divider"></div>
+  <p class="small" style="margin-top:8px;">Seminário — Novembro 2026</p>
+  <span class="slide-number">1</span>
+</div>
+
+<!-- ==================== SLIDE 2: PROBLEM ==================== -->
+<div class="slide">
+  <div class="section-tag">1. Definição do Problema</div>
+  <h2>Contexto e Motivação</h2>
+  <div class="two-col">
+    <div>
+      <h3>Problema</h3>
+      <p>Detecção automática do uso de máscaras faciais em imagens, classificando cada rosto detectado em 3 categorias:</p>
+      <ul style="margin-top:10px;">
+        <li><span class="green">&#9679;</span> <b>Com máscara</b> — uso correto</li>
+        <li><span class="red">&#9679;</span> <b>Sem máscara</b> — não usa</li>
+        <li><span class="yellow">&#9679;</span> <b>Máscara incorreta</b> — abaixo do nariz</li>
+      </ul>
+      <h3 style="margin-top:16px;">Motivação</h3>
+      <ul>
+        <li>Fiscalização sanitária automatizada em locais públicos</li>
+        <li>Monitoramento em tempo real (hospitais, aeroportos, transporte)</li>
+        <li>Redução da necessidade de fiscalização humana</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Tipo de Tarefa</h3>
+      <div class="card" style="margin-bottom:12px;">
+        <p><b>Object Detection</b> (Detecção de Objetos)</p>
+        <p class="small" style="margin-top:6px;">Diferente de classificação simples: o modelo precisa <b>localizar</b> cada rosto (bounding box) e <b>classificar</b> simultaneamente. Uma imagem pode conter múltiplas pessoas com classes diferentes.</p>
+      </div>
+      <h3>Objetivo</h3>
+      <div class="card">
+        <p>Treinar um modelo YOLOv8 com <b>transfer learning</b> para detectar e classificar o uso de máscara em tempo real, avaliando desempenho com métricas de detecção (mAP, precision, recall).</p>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">2</span>
+</div>
+
+<!-- ==================== SLIDE 3: DATASET ==================== -->
+<div class="slide">
+  <div class="section-tag">2. Descrição do Dataset</div>
+  <h2>Face Mask Detection — Kaggle</h2>
+  <div class="two-col">
+    <div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;">
+        <div class="stat-card"><div class="value">853</div><div class="label">Imagens</div></div>
+        <div class="stat-card"><div class="value">4.072</div><div class="label">Anotações</div></div>
+      </div>
+      <h3>Formato</h3>
+      <ul>
+        <li>Imagens PNG de resolução variada</li>
+        <li>Anotações em <b>Pascal VOC</b> (XML)</li>
+        <li>Cada XML contém coordenadas (xmin, ymin, xmax, ymax) e classe</li>
+      </ul>
+      <h3 style="margin-top:14px;">Divisão dos Dados</h3>
+      <table>
+        <tr><th>Split</th><th>Imagens</th><th>Proporção</th></tr>
+        <tr><td>Treino</td><td>682</td><td>80%</td></tr>
+        <tr><td>Validação</td><td>171</td><td>20%</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Distribuição de Classes</h3>
+      <div style="margin:12px 0;">
+        <div class="bar-row">
+          <div class="bar-label">with_mask</div>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--accent-green);">3.232</div></div>
+          <div class="bar-value green">79,4%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">without_mask</div>
+          <div class="bar-track"><div class="bar-fill" style="width:22%;background:var(--accent-red);">717</div></div>
+          <div class="bar-value red">17,6%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">mask_weared_incorrect</div>
+          <div class="bar-track"><div class="bar-fill" style="width:3.8%;background:var(--accent-yellow);font-size:9px;">123</div></div>
+          <div class="bar-value yellow">3,0%</div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:12px; border-left: 3px solid var(--accent-yellow);">
+        <p style="font-size:12px;"><b>&#9888; Desbalanceamento:</b> A classe <i>mask_weared_incorrect</i> tem apenas 123 amostras (3%). Isso impacta diretamente o desempenho do modelo nessa classe.</p>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">3</span>
+</div>
+
+<!-- ==================== SLIDE 4: DATASET SAMPLES ==================== -->
+<div class="slide">
+  <div class="section-tag">2. Descrição do Dataset</div>
+  <h2>Exemplos do Dataset</h2>
+  <div class="two-col" style="gap:16px;">
+    <div class="img-container" style="height:340px;">
+      <img src="results/sample_images.png" alt="Sample images with annotations">
+    </div>
+    <div>
+      <div class="img-container" style="height:200px; margin-bottom:12px;">
+        <img src="results/bbox_analysis.png" alt="Bounding box analysis">
+      </div>
+      <h3>Observações</h3>
+      <ul>
+        <li>A maioria dos bounding boxes são <b>pequenos</b> (rostos distantes na cena)</li>
+        <li>Largura e altura concentradas entre 10-50 pixels</li>
+        <li>Proporção W/H aproximadamente quadrada (rostos)</li>
+        <li>Imagens contêm de 1 a 10+ pessoas cada</li>
+        <li>Cenas variadas: ruas, interiores, close-ups</li>
+      </ul>
+    </div>
+  </div>
+  <span class="slide-number">4</span>
+</div>
+
+<!-- ==================== SLIDE 5: EXPERIMENTAL PROTOCOL ==================== -->
+<div class="slide">
+  <div class="section-tag">3. Protocolo Experimental</div>
+  <h2>Metodologia</h2>
+  <div style="margin:8px 0 16px;">
+    <div class="pipeline">
+      <div class="pipe-step"><div class="icon">&#128193;</div>XML → YOLO</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step"><div class="icon">&#9986;</div>Split 80/20</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step"><div class="icon">&#128736;</div>Augmentation</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step"><div class="icon">&#129504;</div>Train YOLOv8</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step"><div class="icon">&#128200;</div>Avaliação</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step"><div class="icon">&#127919;</div>Inferência</div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div>
+      <h3>Hiperparâmetros</h3>
+      <table>
+        <tr><th>Parâmetro</th><th>Valor</th></tr>
+        <tr><td>Modelo base</td><td>YOLOv8n (Nano)</td></tr>
+        <tr><td>Pesos iniciais</td><td>COCO pre-trained</td></tr>
+        <tr><td>Epochs</td><td>15</td></tr>
+        <tr><td>Image size</td><td>416 × 416</td></tr>
+        <tr><td>Batch size</td><td>8</td></tr>
+        <tr><td>Optimizer</td><td>AdamW (lr=0.00143)</td></tr>
+        <tr><td>Early stopping</td><td>patience = 5</td></tr>
+        <tr><td>Hardware</td><td>CPU (Ryzen 5 5600)</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Métricas de Avaliação</h3>
+      <div class="card" style="margin-bottom:10px;">
+        <p><b>mAP@0.5</b> — Mean Average Precision com IoU ≥ 50%</p>
+        <p class="small">Principal métrica para detecção de objetos</p>
+      </div>
+      <div class="card" style="margin-bottom:10px;">
+        <p><b>mAP@0.5:0.95</b> — Média em múltiplos limiares IoU</p>
+        <p class="small">Métrica mais rigorosa (IoU de 50% a 95%)</p>
+      </div>
+      <div class="card" style="margin-bottom:10px;">
+        <p><b>Precision / Recall</b></p>
+        <p class="small">Precisão das detecções e cobertura dos objetos</p>
+      </div>
+      <div class="card">
+        <p><b>Confusion Matrix</b></p>
+        <p class="small">Erros entre classes e falsos positivos/negativos</p>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">5</span>
+</div>
+
+<!-- ==================== SLIDE 6: ARCHITECTURE ==================== -->
+<div class="slide">
+  <div class="section-tag">4. Arquitetura da Rede</div>
+  <h2>YOLOv8 Nano — "You Only Look Once"</h2>
+  <div class="two-col">
+    <div>
+      <p style="margin-bottom:12px;">Detector de objetos <b>single-stage</b>: localiza e classifica em uma única passada pela rede.</p>
+
+      <div class="arch-box">
+        <div class="arch-block" style="background:var(--primary);flex:3;">Backbone<br><span style="font-size:8px;">Conv + C2f + SPPF</span></div>
+        <div class="arch-block" style="background:#8b5cf6;flex:2;">Neck<br><span style="font-size:8px;">FPN + Upsample</span></div>
+        <div class="arch-block" style="background:var(--accent-green);flex:1.5;">Head<br><span style="font-size:8px;">Detect ×3</span></div>
+      </div>
+
+      <table style="margin-top:12px;">
+        <tr><th>Componente</th><th>Função</th></tr>
+        <tr><td><b>Backbone</b></td><td>Extrai features (bordas, texturas, formas)</td></tr>
+        <tr><td><b>C2f blocks</b></td><td>Cross-stage partial — features multi-escala</td></tr>
+        <tr><td><b>SPPF</b></td><td>Pooling espacial em diferentes escalas</td></tr>
+        <tr><td><b>Neck (FPN)</b></td><td>Funde features de alta e baixa resolução</td></tr>
+        <tr><td><b>Head</b></td><td>Prediz boxes + classes em 3 escalas</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Especificações</h3>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px;">
+        <div class="stat-card"><div class="value" style="font-size:22px;">3.01M</div><div class="label">Parâmetros</div></div>
+        <div class="stat-card"><div class="value" style="font-size:22px;">8.2</div><div class="label">GFLOPs</div></div>
+        <div class="stat-card"><div class="value" style="font-size:22px;">129</div><div class="label">Camadas</div></div>
+        <div class="stat-card"><div class="value" style="font-size:22px;">349/355</div><div class="label">Pesos transferidos</div></div>
+      </div>
+
+      <h3>Por que YOLOv8 Nano?</h3>
+      <ul>
+        <li><b>Eficiente para CPU</b> — treino viável sem GPU</li>
+        <li><b>Dataset pequeno</b> — modelo maior causaria overfitting</li>
+        <li><b>Transfer learning</b> — COCO → face masks</li>
+        <li><b>Velocidade</b> — 67ms/imagem (CPU), aplicável em tempo real com GPU</li>
+      </ul>
+    </div>
+  </div>
+  <span class="slide-number">6</span>
+</div>
+
+<!-- ==================== SLIDE 7: CONVERGENCE ==================== -->
+<div class="slide">
+  <div class="section-tag">5. Convergência da Rede</div>
+  <h2>Curvas de Treinamento</h2>
+  <div class="two-col" style="gap:16px;">
+    <div class="img-container" style="height:300px;">
+      <img src="results/train/results.png" alt="Training curves">
+    </div>
+    <div>
+      <h3>Análise da Convergência</h3>
+      <ul>
+        <li><span class="green">&#9679;</span> <b>Todas as losses decrescem</b> continuamente — modelo aprendendo</li>
+        <li><span class="green">&#9679;</span> <b>Val loss acompanha train loss</b> — sem overfitting significativo</li>
+        <li><span class="green">&#9679;</span> <b>mAP crescente</b> ao longo das 15 epochs</li>
+        <li><span class="yellow">&#9679;</span> <b>Curva ainda subindo</b> na epoch 15 — mais epochs poderiam melhorar</li>
+      </ul>
+
+      <h3 style="margin-top:14px;">Técnicas Anti-overfitting</h3>
+      <div class="card" style="margin-bottom:8px; padding:10px 14px;">
+        <p style="font-size:12px;"><b>Transfer Learning</b> — 349 camadas pré-treinadas (COCO, 330K imgs)</p>
+      </div>
+      <div class="card" style="margin-bottom:8px; padding:10px 14px;">
+        <p style="font-size:12px;"><b>Data Augmentation</b> — Mosaic, flip, scale (±50%), HSV, erasing (40%)</p>
+      </div>
+      <div class="card" style="padding:10px 14px;">
+        <p style="font-size:12px;"><b>Early Stopping</b> — patience=5 epochs sem melhoria</p>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">7</span>
+</div>
+
+<!-- ==================== SLIDE 8: RESULTS - METRICS ==================== -->
+<div class="slide">
+  <div class="section-tag">6. Análise de Resultados</div>
+  <h2>Métricas de Desempenho</h2>
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; margin-bottom:16px;">
+    <div class="stat-card"><div class="value">74.5%</div><div class="label">mAP@0.5</div></div>
+    <div class="stat-card"><div class="value">48.6%</div><div class="label">mAP@0.5:0.95</div></div>
+    <div class="stat-card"><div class="value">76.2%</div><div class="label">Precision</div></div>
+    <div class="stat-card"><div class="value">71.4%</div><div class="label">Recall</div></div>
+  </div>
+  <div class="two-col">
+    <div>
+      <h3>Desempenho por Classe</h3>
+      <div style="margin:10px 0;">
+        <div class="bar-row">
+          <div class="bar-label" style="width:140px;">with_mask</div>
+          <div class="bar-track"><div class="bar-fill" style="width:93.2%;background:var(--accent-green);">AP 93.2%</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="width:140px;">without_mask</div>
+          <div class="bar-track"><div class="bar-fill" style="width:75.1%;background:var(--accent-red);">AP 75.1%</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="width:140px;">mask_incorrect</div>
+          <div class="bar-track"><div class="bar-fill" style="width:55.2%;background:var(--accent-yellow);">AP 55.2%</div></div>
+        </div>
+      </div>
+      <table style="margin-top:8px;">
+        <tr><th>Classe</th><th>Precision</th><th>Recall</th><th>AP@0.5</th></tr>
+        <tr><td><span class="green">&#9679;</span> with_mask</td><td>0.890</td><td>0.901</td><td><b>0.932</b></td></tr>
+        <tr><td><span class="red">&#9679;</span> without_mask</td><td>0.791</td><td>0.686</td><td><b>0.751</b></td></tr>
+        <tr><td><span class="yellow">&#9679;</span> mask_incorrect</td><td>0.604</td><td>0.556</td><td><b>0.552</b></td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Curva Precision-Recall</h3>
+      <div class="img-container" style="height:255px;">
+        <img src="results/train/BoxPR_curve.png" alt="PR Curve">
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">8</span>
+</div>
+
+<!-- ==================== SLIDE 9: CONFUSION MATRIX ==================== -->
+<div class="slide">
+  <div class="section-tag">6. Análise de Resultados</div>
+  <h2>Matriz de Confusão</h2>
+  <div class="two-col" style="gap:20px;">
+    <div class="img-container" style="height:360px;">
+      <img src="results/train/confusion_matrix_normalized.png" alt="Confusion Matrix">
+    </div>
+    <div>
+      <h3>Análise dos Erros</h3>
+      <div class="card" style="margin-bottom:10px; border-left:3px solid var(--accent-green); padding:12px 14px;">
+        <p><b>with_mask: 96% acerto</b></p>
+        <p class="small">Excelente — quase sem confusão</p>
+      </div>
+      <div class="card" style="margin-bottom:10px; border-left:3px solid var(--accent-red); padding:12px 14px;">
+        <p><b>without_mask: 83% acerto</b></p>
+        <p class="small">9% confundido com with_mask (rosto parcialmente coberto)</p>
+      </div>
+      <div class="card" style="margin-bottom:10px; border-left:3px solid var(--accent-yellow); padding:12px 14px;">
+        <p><b>mask_incorrect: 41% acerto</b></p>
+        <p class="small">50% confundido com with_mask — visualmente muito similares</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--text-dim); padding:12px 14px;">
+        <p><b>Principal causa de erro:</b></p>
+        <p class="small">Máscara incorreta (abaixo do nariz) é visualmente muito parecida com máscara correta, e a classe tem poucas amostras (123 vs 3.232).</p>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">9</span>
+</div>
+
+<!-- ==================== SLIDE 10: PREDICTIONS ==================== -->
+<div class="slide">
+  <div class="section-tag">6. Análise de Resultados</div>
+  <h2>Exemplos de Predições</h2>
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; flex:1;">
+    <div>
+      <div class="img-container" style="height:160px; margin-bottom:6px;">
+        <img src="results/predictions/maksssksksss848.jpg" alt="Prediction 1">
+      </div>
+      <p class="small" style="text-align:center;"><span class="green">&#10004;</span> Múltiplas masks detectadas</p>
+    </div>
+    <div>
+      <div class="img-container" style="height:160px; margin-bottom:6px;">
+        <img src="results/predictions/maksssksksss425.jpg" alt="Prediction 2">
+      </div>
+      <p class="small" style="text-align:center;"><span class="green">&#10004;</span> Confiança alta (0.92)</p>
+    </div>
+    <div>
+      <div class="img-container" style="height:160px; margin-bottom:6px;">
+        <img src="results/predictions/maksssksksss365.jpg" alt="Prediction 3">
+      </div>
+      <p class="small" style="text-align:center;"><span class="green">&#10004;</span> Cena com crowd</p>
+    </div>
+    <div>
+      <div class="img-container" style="height:160px; margin-bottom:6px;">
+        <img src="results/predictions/maksssksksss760.jpg" alt="Prediction 4">
+      </div>
+      <p class="small" style="text-align:center;"><span class="green">&#10004;</span> 3 classes na mesma cena</p>
+    </div>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:8px;">
+    <div class="card" style="padding:12px;">
+      <h3><span class="green">&#10004;</span> Predições corretas</h3>
+      <ul>
+        <li class="small">with_mask detectada com alta confiança (0.6–0.9)</li>
+        <li class="small">Funciona em diferentes cenários (rua, interior, close-up)</li>
+        <li class="small">Detecta múltiplas pessoas na mesma imagem</li>
+      </ul>
+    </div>
+    <div class="card" style="padding:12px;">
+      <h3><span class="red">&#10008;</span> Erros observados</h3>
+      <ul>
+        <li class="small">mask_incorrect frequentemente classificada como with_mask</li>
+        <li class="small">Rostos muito pequenos/distantes podem ser perdidos</li>
+        <li class="small">Oclusão parcial reduz confiança da detecção</li>
+      </ul>
+    </div>
+  </div>
+  <span class="slide-number">10</span>
+</div>
+
+<!-- ==================== SLIDE 11: CONCLUSION ==================== -->
+<div class="slide">
+  <div class="section-tag">Conclusão</div>
+  <h2>Análise Crítica e Melhorias</h2>
+  <div class="two-col">
+    <div>
+      <h3><span class="green">&#10004;</span> Pontos Fortes</h3>
+      <ul>
+        <li>Alta performance em with_mask (<b>93.2% AP</b>)</li>
+        <li>Transfer learning eficaz com apenas <b>853 imagens</b></li>
+        <li>Pipeline completo e <b>reprodutível</b></li>
+        <li>Inferência rápida (~67ms/img CPU), viável para tempo real com GPU</li>
+        <li>Sem overfitting — val loss acompanha train loss</li>
+      </ul>
+
+      <h3 style="margin-top:16px;"><span class="red">&#10008;</span> Limitações</h3>
+      <ul>
+        <li><b>Desbalanceamento</b> — mask_incorrect com apenas 3% dos dados</li>
+        <li><b>Confusão visual</b> entre mask_incorrect e with_mask</li>
+        <li><b>CPU only</b> — limitou epochs e resolução</li>
+        <li><b>Dataset pequeno</b> — 853 imagens</li>
+      </ul>
+    </div>
+    <div>
+      <h3>&#128161; Melhorias Propostas</h3>
+      <div class="card" style="margin-bottom:8px; padding:10px 14px;">
+        <p style="font-size:12px;"><b>1. Oversampling</b> — Aumentar amostras de mask_incorrect com augmentation específico</p>
+      </div>
+      <div class="card" style="margin-bottom:8px; padding:10px 14px;">
+        <p style="font-size:12px;"><b>2. GPU Training</b> — Mais epochs (50-100), resolução 640px, modelo YOLOv8s</p>
+      </div>
+      <div class="card" style="margin-bottom:8px; padding:10px 14px;">
+        <p style="font-size:12px;"><b>3. Focal Loss</b> — Peso maior para classes raras durante treinamento</p>
+      </div>
+      <div class="card" style="margin-bottom:8px; padding:10px 14px;">
+        <p style="font-size:12px;"><b>4. Mais dados</b> — Coletar imagens adicionais de mask_incorrect</p>
+      </div>
+      <div class="card" style="padding:10px 14px;">
+        <p style="font-size:12px;"><b>5. Detecção em vídeo</b> — Aplicar em stream de câmera em tempo real</p>
+      </div>
+
+      <div style="margin-top:16px; text-align:center;">
+        <div class="stat-card" style="display:inline-block; padding:12px 24px;">
+          <div class="value" style="font-size:24px;">74.5% mAP</div>
+          <div class="label">Resultado Final</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">11</span>
+</div>
+
+</div><!-- /deck -->
+
+<!-- NAVIGATION -->
+<div class="nav">
+  <button onclick="prev()" title="Anterior">&#9664;</button>
+  <span class="counter" id="counter">1 / 11</span>
+  <button onclick="next()" title="Próximo">&#9654;</button>
+</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const counter = document.getElementById('counter');
+  const total = slides.length;
+
+  function show(n) {
+    slides[current].classList.remove('active');
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+    counter.textContent = `${current + 1} / ${total}`;
+  }
+  function next() { show(current + 1); }
+  function prev() { show(current - 1); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+    if (e.key === 'Home') { e.preventDefault(); show(0); }
+    if (e.key === 'End') { e.preventDefault(); show(total - 1); }
+  });
+</script>
+</body>
+</html>
