@@ -1,0 +1,38 @@
+============================================================
+FACE MASK DETECTION - EXPERIMENT REPORT
+============================================================
+
+1. PROBLEM
+   Task: Object Detection - Face Mask Detection
+   Goal: Detect if people wear masks correctly, incorrectly, or not at all
+   Dataset: Face Mask Detection (Kaggle) - 853 images, 4072 annotations
+   Classes: with_mask, without_mask, mask_weared_incorrect
+   Class distribution: with_mask=3232, without_mask=717, mask_weared_incorrect=123
+
+2. METHODOLOGY
+   Model: YOLOv8 Nano (pre-trained COCO, fine-tuned)
+   Strategy: Transfer Learning
+   Image size: 416x416
+   Epochs: 15 (early stopping patience=5)
+   Batch size: 8
+   Split: 80% train (682 images) / 20% val (171 images)
+   Augmentation: YOLOv8 defaults (mosaic, flip, scale, HSV)
+   Hardware: CPU
+
+3. RESULTS
+   mAP@0.5:      0.7450
+   mAP@0.5:0.95: 0.4859
+   Precision:     0.7617
+   Recall:        0.7143
+   AP@0.5 with_mask                 0.9318
+   AP@0.5 without_mask              0.7511
+   AP@0.5 mask_weared_incorrect     0.5521
+
+4. OUTPUT FILES
+   F:\Visao\results\class_distribution.png - Class distribution
+   F:\Visao\results\sample_images.png - Annotated samples
+   F:\Visao\results\bbox_analysis.png - Bbox size analysis
+   F:\Visao\results\train - Training curves, confusion matrix
+   F:\Visao\results\val - Validation plots
+   F:\Visao\results\predictions - Sample detections
+   F:\Visao\results\train\weights\best.pt - Best model

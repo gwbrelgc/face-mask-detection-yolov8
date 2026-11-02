@@ -1,0 +1,18 @@
+# Model weights (too large for GitHub)
+*.pt
+*.onnx
+*.torchscript
+
+# Cached dataset (can be regenerated)
+dataset/train/
+dataset/val/
+dataset/*.cache
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# OS
+Thumbs.db
+.DS_Store
