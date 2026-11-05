@@ -102,6 +102,7 @@
   th { text-align: left; padding: 8px 10px; font-weight: 600; color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid var(--border); }
   td { padding: 7px 10px; border-bottom: 1px solid var(--border); }
   tr:last-child td { border-bottom: none; }
+  tr.highlight-row td { background: var(--primary-soft); }
 
   /* IMAGES */
   .img-container {
@@ -181,43 +182,43 @@
 
 <!-- ==================== SLIDE 1: COVER ==================== -->
 <div class="slide cover active">
-  <div class="badge">Visão Computacional</div>
+  <div class="badge">Visao Computacional</div>
   <h1>Face Mask Detection</h1>
-  <p class="subtitle">Detecção de Máscaras Faciais com YOLOv8 e Deep Learning</p>
+  <p class="subtitle">Deteccao de Mascaras Faciais com YOLOv8 e Deep Learning</p>
   <div class="divider"></div>
-  <p class="small" style="margin-top:8px;">Seminário — Novembro 2026</p>
+  <p class="small" style="margin-top:8px;">Seminario — Novembro 2026</p>
   <span class="slide-number">1</span>
 </div>
 
 <!-- ==================== SLIDE 2: PROBLEM ==================== -->
 <div class="slide">
-  <div class="section-tag">1. Definição do Problema</div>
-  <h2>Contexto e Motivação</h2>
+  <div class="section-tag">1. Definicao do Problema</div>
+  <h2>Contexto e Motivacao</h2>
   <div class="two-col">
     <div>
       <h3>Problema</h3>
-      <p>Detecção automática do uso de máscaras faciais em imagens, classificando cada rosto detectado em 3 categorias:</p>
+      <p>Deteccao automatica do uso de mascaras faciais em imagens, classificando cada rosto detectado em 3 categorias:</p>
       <ul style="margin-top:10px;">
-        <li><span class="green">&#9679;</span> <b>Com máscara</b> — uso correto</li>
-        <li><span class="red">&#9679;</span> <b>Sem máscara</b> — não usa</li>
-        <li><span class="yellow">&#9679;</span> <b>Máscara incorreta</b> — abaixo do nariz</li>
+        <li><span class="green">&#9679;</span> <b>Com mascara</b> — uso correto</li>
+        <li><span class="red">&#9679;</span> <b>Sem mascara</b> — nao usa</li>
+        <li><span class="yellow">&#9679;</span> <b>Mascara incorreta</b> — abaixo do nariz</li>
       </ul>
-      <h3 style="margin-top:16px;">Motivação</h3>
+      <h3 style="margin-top:16px;">Motivacao</h3>
       <ul>
-        <li>Fiscalização sanitária automatizada em locais públicos</li>
+        <li>Fiscalizacao sanitaria automatizada em locais publicos</li>
         <li>Monitoramento em tempo real (hospitais, aeroportos, transporte)</li>
-        <li>Redução da necessidade de fiscalização humana</li>
+        <li>Reducao da necessidade de fiscalizacao humana</li>
       </ul>
     </div>
     <div>
       <h3>Tipo de Tarefa</h3>
       <div class="card" style="margin-bottom:12px;">
-        <p><b>Object Detection</b> (Detecção de Objetos)</p>
-        <p class="small" style="margin-top:6px;">Diferente de classificação simples: o modelo precisa <b>localizar</b> cada rosto (bounding box) e <b>classificar</b> simultaneamente. Uma imagem pode conter múltiplas pessoas com classes diferentes.</p>
+        <p><b>Object Detection</b> (Deteccao de Objetos)</p>
+        <p class="small" style="margin-top:6px;">Diferente de classificacao simples: o modelo precisa <b>localizar</b> cada rosto (bounding box) e <b>classificar</b> simultaneamente. Uma imagem pode conter multiplas pessoas com classes diferentes.</p>
       </div>
       <h3>Objetivo</h3>
       <div class="card">
-        <p>Treinar um modelo YOLOv8 com <b>transfer learning</b> para detectar e classificar o uso de máscara em tempo real, avaliando desempenho com métricas de detecção (mAP, precision, recall).</p>
+        <p>Treinar um modelo YOLOv8 com <b>transfer learning</b> para detectar e classificar o uso de mascara em tempo real, avaliando desempenho com metricas de deteccao (mAP, precision, recall).</p>
       </div>
     </div>
   </div>
@@ -226,29 +227,29 @@
 
 <!-- ==================== SLIDE 3: DATASET ==================== -->
 <div class="slide">
-  <div class="section-tag">2. Descrição do Dataset</div>
+  <div class="section-tag">2. Descricao do Dataset</div>
   <h2>Face Mask Detection — Kaggle</h2>
   <div class="two-col">
     <div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;">
         <div class="stat-card"><div class="value">853</div><div class="label">Imagens</div></div>
-        <div class="stat-card"><div class="value">4.072</div><div class="label">Anotações</div></div>
+        <div class="stat-card"><div class="value">4.072</div><div class="label">Anotacoes</div></div>
       </div>
       <h3>Formato</h3>
       <ul>
-        <li>Imagens PNG de resolução variada</li>
-        <li>Anotações em <b>Pascal VOC</b> (XML)</li>
-        <li>Cada XML contém coordenadas (xmin, ymin, xmax, ymax) e classe</li>
+        <li>Imagens PNG de resolucao variada</li>
+        <li>Anotacoes em <b>Pascal VOC</b> (XML)</li>
+        <li>Cada XML contem coordenadas (xmin, ymin, xmax, ymax) e classe</li>
       </ul>
-      <h3 style="margin-top:14px;">Divisão dos Dados</h3>
+      <h3 style="margin-top:14px;">Divisao dos Dados</h3>
       <table>
-        <tr><th>Split</th><th>Imagens</th><th>Proporção</th></tr>
+        <tr><th>Split</th><th>Imagens</th><th>Proporcao</th></tr>
         <tr><td>Treino</td><td>682</td><td>80%</td></tr>
-        <tr><td>Validação</td><td>171</td><td>20%</td></tr>
+        <tr><td>Validacao</td><td>171</td><td>20%</td></tr>
       </table>
     </div>
     <div>
-      <h3>Distribuição de Classes</h3>
+      <h3>Distribuicao de Classes</h3>
       <div style="margin:12px 0;">
         <div class="bar-row">
           <div class="bar-label">with_mask</div>
@@ -276,7 +277,7 @@
 
 <!-- ==================== SLIDE 4: DATASET SAMPLES ==================== -->
 <div class="slide">
-  <div class="section-tag">2. Descrição do Dataset</div>
+  <div class="section-tag">2. Descricao do Dataset</div>
   <h2>Exemplos do Dataset</h2>
   <div class="two-col" style="gap:16px;">
     <div class="img-container" style="height:340px;">
@@ -286,12 +287,12 @@
       <div class="img-container" style="height:200px; margin-bottom:12px;">
         <img src="results/bbox_analysis.png" alt="Bounding box analysis">
       </div>
-      <h3>Observações</h3>
+      <h3>Observacoes</h3>
       <ul>
-        <li>A maioria dos bounding boxes são <b>pequenos</b> (rostos distantes na cena)</li>
+        <li>A maioria dos bounding boxes sao <b>pequenos</b> (rostos distantes na cena)</li>
         <li>Largura e altura concentradas entre 10-50 pixels</li>
-        <li>Proporção W/H aproximadamente quadrada (rostos)</li>
-        <li>Imagens contêm de 1 a 10+ pessoas cada</li>
+        <li>Proporcao W/H aproximadamente quadrada (rostos)</li>
+        <li>Imagens contem de 1 a 10+ pessoas cada</li>
         <li>Cenas variadas: ruas, interiores, close-ups</li>
       </ul>
     </div>
@@ -299,58 +300,61 @@
   <span class="slide-number">4</span>
 </div>
 
-<!-- ==================== SLIDE 5: EXPERIMENTAL PROTOCOL ==================== -->
+<!-- ==================== SLIDE 5: METHODOLOGY ==================== -->
 <div class="slide">
   <div class="section-tag">3. Protocolo Experimental</div>
-  <h2>Metodologia</h2>
-  <div style="margin:8px 0 16px;">
-    <div class="pipeline">
-      <div class="pipe-step"><div class="icon">&#128193;</div>XML → YOLO</div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step"><div class="icon">&#9986;</div>Split 80/20</div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step"><div class="icon">&#128736;</div>Augmentation</div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step"><div class="icon">&#129504;</div>Train YOLOv8</div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step"><div class="icon">&#128200;</div>Avaliação</div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step"><div class="icon">&#127919;</div>Inferência</div>
-    </div>
-  </div>
+  <h2>Metodologia: Variavel Controlada</h2>
   <div class="two-col">
     <div>
-      <h3>Hiperparâmetros</h3>
+      <h3>Abordagem</h3>
+      <p style="margin-bottom:12px;">Estudo sistematico com <b>6 experimentos</b>, variando <b>um unico parametro</b> por vez a partir de uma configuracao baseline. Permite isolar o impacto de cada escolha.</p>
+      <div class="pipeline" style="margin:12px 0;justify-content:flex-start;gap:4px;">
+        <div class="pipe-step" style="min-width:70px;padding:8px;"><div class="icon">&#128193;</div>Preparar</div>
+        <div class="pipe-arrow">&#8594;</div>
+        <div class="pipe-step" style="min-width:70px;padding:8px;"><div class="icon">&#128300;</div>6 Exps</div>
+        <div class="pipe-arrow">&#8594;</div>
+        <div class="pipe-step" style="min-width:70px;padding:8px;"><div class="icon">&#128200;</div>Comparar</div>
+        <div class="pipe-arrow">&#8594;</div>
+        <div class="pipe-step" style="min-width:70px;padding:8px;"><div class="icon">&#127919;</div>Final</div>
+      </div>
+      <h3 style="margin-top:14px;">Configuracao Baseline</h3>
       <table>
-        <tr><th>Parâmetro</th><th>Valor</th></tr>
-        <tr><td>Modelo base</td><td>YOLOv8n (Nano)</td></tr>
+        <tr><th>Parametro</th><th>Valor</th></tr>
+        <tr><td>Modelo</td><td>YOLOv8n (Nano)</td></tr>
         <tr><td>Pesos iniciais</td><td>COCO pre-trained</td></tr>
-        <tr><td>Epochs</td><td>15</td></tr>
-        <tr><td>Image size</td><td>416 × 416</td></tr>
+        <tr><td>Image size</td><td>640 x 640</td></tr>
+        <tr><td>Epochs</td><td>15 (comparacao) / 30 (final)</td></tr>
         <tr><td>Batch size</td><td>8</td></tr>
-        <tr><td>Optimizer</td><td>AdamW (lr=0.00143)</td></tr>
-        <tr><td>Early stopping</td><td>patience = 5</td></tr>
-        <tr><td>Hardware</td><td>CPU (Ryzen 5 5600)</td></tr>
+        <tr><td>Learning rate</td><td>0.01</td></tr>
+        <tr><td>Mosaic augmentation</td><td>Ativo</td></tr>
+        <tr><td>Hardware</td><td>RTX 4060 8GB (CUDA)</td></tr>
       </table>
     </div>
     <div>
-      <h3>Métricas de Avaliação</h3>
-      <div class="card" style="margin-bottom:10px;">
-        <p><b>mAP@0.5</b> — Mean Average Precision com IoU ≥ 50%</p>
-        <p class="small">Principal métrica para detecção de objetos</p>
+      <h3>Variaveis Testadas</h3>
+      <div class="card" style="margin-bottom:8px; padding:10px 14px;">
+        <p style="font-size:12px;"><b>E1 — Tamanho do modelo:</b> YOLOv8s (Small) vs Nano</p>
+        <p class="small">Modelo maior melhora precisao neste dataset?</p>
       </div>
-      <div class="card" style="margin-bottom:10px;">
-        <p><b>mAP@0.5:0.95</b> — Média em múltiplos limiares IoU</p>
-        <p class="small">Métrica mais rigorosa (IoU de 50% a 95%)</p>
+      <div class="card" style="margin-bottom:8px; padding:10px 14px;">
+        <p style="font-size:12px;"><b>E2/E3 — Resolucao:</b> 416x416 e 320x320 vs 640</p>
+        <p class="small">Qual a resolucao minima aceitavel?</p>
       </div>
-      <div class="card" style="margin-bottom:10px;">
-        <p><b>Precision / Recall</b></p>
-        <p class="small">Precisão das detecções e cobertura dos objetos</p>
+      <div class="card" style="margin-bottom:8px; padding:10px 14px;">
+        <p style="font-size:12px;"><b>E4 — Learning rate:</b> 0.001 vs 0.01</p>
+        <p class="small">Taxa menor converge melhor?</p>
       </div>
-      <div class="card">
-        <p><b>Confusion Matrix</b></p>
-        <p class="small">Erros entre classes e falsos positivos/negativos</p>
+      <div class="card" style="margin-bottom:8px; padding:10px 14px;">
+        <p style="font-size:12px;"><b>E5 — Augmentation:</b> Mosaic desativado</p>
+        <p class="small">Augmentation ajuda com dataset pequeno?</p>
       </div>
+      <h3 style="margin-top:12px;">Metricas de Avaliacao</h3>
+      <ul>
+        <li><b>mAP@0.5</b> — Mean Average Precision (IoU >= 50%)</li>
+        <li><b>mAP@0.5:0.95</b> — Media em multiplos limiares IoU</li>
+        <li><b>Precision / Recall</b> — Qualidade vs cobertura</li>
+        <li><b>Tempo de treino</b> — Custo computacional</li>
+      </ul>
     </div>
   </div>
   <span class="slide-number">5</span>
@@ -362,85 +366,188 @@
   <h2>YOLOv8 Nano — "You Only Look Once"</h2>
   <div class="two-col">
     <div>
-      <p style="margin-bottom:12px;">Detector de objetos <b>single-stage</b>: localiza e classifica em uma única passada pela rede.</p>
+      <p style="margin-bottom:12px;">Detector de objetos <b>single-stage</b>: localiza e classifica em uma unica passada pela rede.</p>
 
       <div class="arch-box">
         <div class="arch-block" style="background:var(--primary);flex:3;">Backbone<br><span style="font-size:8px;">Conv + C2f + SPPF</span></div>
         <div class="arch-block" style="background:#8b5cf6;flex:2;">Neck<br><span style="font-size:8px;">FPN + Upsample</span></div>
-        <div class="arch-block" style="background:var(--accent-green);flex:1.5;">Head<br><span style="font-size:8px;">Detect ×3</span></div>
+        <div class="arch-block" style="background:var(--accent-green);flex:1.5;">Head<br><span style="font-size:8px;">Detect x3</span></div>
       </div>
 
       <table style="margin-top:12px;">
-        <tr><th>Componente</th><th>Função</th></tr>
+        <tr><th>Componente</th><th>Funcao</th></tr>
         <tr><td><b>Backbone</b></td><td>Extrai features (bordas, texturas, formas)</td></tr>
         <tr><td><b>C2f blocks</b></td><td>Cross-stage partial — features multi-escala</td></tr>
         <tr><td><b>SPPF</b></td><td>Pooling espacial em diferentes escalas</td></tr>
-        <tr><td><b>Neck (FPN)</b></td><td>Funde features de alta e baixa resolução</td></tr>
+        <tr><td><b>Neck (FPN)</b></td><td>Funde features de alta e baixa resolucao</td></tr>
         <tr><td><b>Head</b></td><td>Prediz boxes + classes em 3 escalas</td></tr>
       </table>
     </div>
     <div>
-      <h3>Especificações</h3>
+      <h3>Especificacoes</h3>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px;">
-        <div class="stat-card"><div class="value" style="font-size:22px;">3.01M</div><div class="label">Parâmetros</div></div>
+        <div class="stat-card"><div class="value" style="font-size:22px;">3.01M</div><div class="label">Parametros</div></div>
         <div class="stat-card"><div class="value" style="font-size:22px;">8.2</div><div class="label">GFLOPs</div></div>
         <div class="stat-card"><div class="value" style="font-size:22px;">129</div><div class="label">Camadas</div></div>
         <div class="stat-card"><div class="value" style="font-size:22px;">349/355</div><div class="label">Pesos transferidos</div></div>
       </div>
 
       <h3>Por que YOLOv8 Nano?</h3>
+      <div class="card" style="border-left:3px solid var(--accent-green); margin-bottom:8px; padding:10px 14px;">
+        <p style="font-size:12px;"><b>Validado experimentalmente:</b> YOLOv8s (Small, 11.2M params) obteve mAP 84.8% vs 85.5% do Nano — modelo maior <b>nao melhorou</b> neste dataset.</p>
+      </div>
       <ul>
-        <li><b>Eficiente para CPU</b> — treino viável sem GPU</li>
-        <li><b>Dataset pequeno</b> — modelo maior causaria overfitting</li>
-        <li><b>Transfer learning</b> — COCO → face masks</li>
-        <li><b>Velocidade</b> — 67ms/imagem (CPU), aplicável em tempo real com GPU</li>
+        <li><b>Dataset pequeno (853 imgs)</b> — modelo maior causa overfitting</li>
+        <li><b>Transfer learning</b> — COCO pre-trained compensa o tamanho</li>
+        <li><b>3x menos parametros</b> — treina mais rapido, mesmo resultado</li>
+        <li><b>Inferencia rapida</b> — viavel para aplicacao em tempo real</li>
       </ul>
     </div>
   </div>
   <span class="slide-number">6</span>
 </div>
 
-<!-- ==================== SLIDE 7: CONVERGENCE ==================== -->
+<!-- ==================== SLIDE 7: EXPERIMENTAL COMPARISON ==================== -->
 <div class="slide">
-  <div class="section-tag">5. Convergência da Rede</div>
-  <h2>Curvas de Treinamento</h2>
-  <div class="two-col" style="gap:16px;">
-    <div class="img-container" style="height:300px;">
-      <img src="results/train/results.png" alt="Training curves">
+  <div class="section-tag">5. Estudo Experimental</div>
+  <h2>Comparacao de Configuracoes</h2>
+  <div style="margin-bottom:12px;">
+    <table>
+      <tr>
+        <th>#</th><th>Configuracao</th><th>Variavel</th>
+        <th style="text-align:right;">mAP@50</th><th style="text-align:right;">mAP@50-95</th>
+        <th style="text-align:right;">Precision</th><th style="text-align:right;">Recall</th>
+        <th style="text-align:right;">Tempo</th>
+      </tr>
+      <tr class="highlight-row">
+        <td><b>E0</b></td><td>Baseline (Nano, 640)</td><td>—</td>
+        <td style="text-align:right;"><b>85.5%</b></td><td style="text-align:right;">57.9%</td>
+        <td style="text-align:right;">92.4%</td><td style="text-align:right;">70.6%</td>
+        <td style="text-align:right;">3 min</td>
+      </tr>
+      <tr>
+        <td>E1</td><td>YOLOv8s (Small)</td><td>model</td>
+        <td style="text-align:right;">84.8%</td><td style="text-align:right;">58.6%</td>
+        <td style="text-align:right;">85.2%</td><td style="text-align:right;">78.5%</td>
+        <td style="text-align:right;">4 min</td>
+      </tr>
+      <tr>
+        <td>E2</td><td>Resolucao 416</td><td>imgsz</td>
+        <td style="text-align:right;">78.4%</td><td style="text-align:right;">52.0%</td>
+        <td style="text-align:right;">89.5%</td><td style="text-align:right;">65.1%</td>
+        <td style="text-align:right;">2 min</td>
+      </tr>
+      <tr>
+        <td>E3</td><td>Resolucao 320</td><td>imgsz</td>
+        <td style="text-align:right;">71.6%</td><td style="text-align:right;">45.3%</td>
+        <td style="text-align:right;">84.2%</td><td style="text-align:right;">63.5%</td>
+        <td style="text-align:right;">2 min</td>
+      </tr>
+      <tr>
+        <td>E4</td><td>LR = 0.001</td><td>lr0</td>
+        <td style="text-align:right;">85.5%</td><td style="text-align:right;">57.9%</td>
+        <td style="text-align:right;">92.4%</td><td style="text-align:right;">70.6%</td>
+        <td style="text-align:right;">3 min</td>
+      </tr>
+      <tr>
+        <td>E5</td><td>Sem mosaic</td><td>mosaic</td>
+        <td style="text-align:right;">84.4%</td><td style="text-align:right;">56.6%</td>
+        <td style="text-align:right;">83.7%</td><td style="text-align:right;">79.1%</td>
+        <td style="text-align:right;">3 min</td>
+      </tr>
+    </table>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+    <div class="card" style="border-left:3px solid var(--accent-green); padding:10px 14px;">
+      <h3 style="font-size:13px;">Modelo</h3>
+      <p class="small">YOLOv8s <b>nao</b> superou o Nano (84.8 vs 85.5 mAP). Modelo maior e desnecessario para 853 imagens.</p>
     </div>
-    <div>
-      <h3>Análise da Convergência</h3>
-      <ul>
-        <li><span class="green">&#9679;</span> <b>Todas as losses decrescem</b> continuamente — modelo aprendendo</li>
-        <li><span class="green">&#9679;</span> <b>Val loss acompanha train loss</b> — sem overfitting significativo</li>
-        <li><span class="green">&#9679;</span> <b>mAP crescente</b> ao longo das 15 epochs</li>
-        <li><span class="yellow">&#9679;</span> <b>Curva ainda subindo</b> na epoch 15 — mais epochs poderiam melhorar</li>
-      </ul>
-
-      <h3 style="margin-top:14px;">Técnicas Anti-overfitting</h3>
-      <div class="card" style="margin-bottom:8px; padding:10px 14px;">
-        <p style="font-size:12px;"><b>Transfer Learning</b> — 349 camadas pré-treinadas (COCO, 330K imgs)</p>
-      </div>
-      <div class="card" style="margin-bottom:8px; padding:10px 14px;">
-        <p style="font-size:12px;"><b>Data Augmentation</b> — Mosaic, flip, scale (±50%), HSV, erasing (40%)</p>
-      </div>
-      <div class="card" style="padding:10px 14px;">
-        <p style="font-size:12px;"><b>Early Stopping</b> — patience=5 epochs sem melhoria</p>
-      </div>
+    <div class="card" style="border-left:3px solid var(--primary); padding:10px 14px;">
+      <h3 style="font-size:13px;">Resolucao</h3>
+      <p class="small">Impacto critico: 640&#8594;416 perde <b>7%</b>, 640&#8594;320 perde <b>14%</b> de mAP. Resolucao 640 e essencial.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--accent-yellow); padding:10px 14px;">
+      <h3 style="font-size:13px;">Augmentation</h3>
+      <p class="small">Mosaic contribui +1.1% mAP. Learning rate 0.001 convergiu ao mesmo ponto que 0.01.</p>
     </div>
   </div>
+  <div class="footer-note">Metodologia: variavel controlada — cada experimento muda <b>um unico parametro</b> do baseline. Todas as comparacoes com 15 epochs no mesmo hardware (RTX 4060).</div>
   <span class="slide-number">7</span>
 </div>
 
-<!-- ==================== SLIDE 8: RESULTS - METRICS ==================== -->
+<!-- ==================== SLIDE 8: EXPERIMENTAL PLOTS ==================== -->
 <div class="slide">
-  <div class="section-tag">6. Análise de Resultados</div>
-  <h2>Métricas de Desempenho</h2>
+  <div class="section-tag">5. Estudo Experimental</div>
+  <h2>Analise Comparativa</h2>
+  <div class="two-col" style="gap:16px;">
+    <div>
+      <div class="img-container" style="height:220px; margin-bottom:12px;">
+        <img src="experiments/plots/metrics_comparison.png" alt="Metrics comparison across experiments">
+      </div>
+      <div class="card" style="padding:10px 14px;">
+        <h3 style="font-size:13px;">Conclusao do Estudo</h3>
+        <p class="small">A configuracao baseline (YOLOv8n, 640px, lr=0.01, mosaic) ja e <b>otima</b> para este problema. Nenhuma variacao superou significativamente. Decisao: treinar modelo final com esta config + <b>30 epochs</b>.</p>
+      </div>
+    </div>
+    <div>
+      <div class="img-container" style="height:220px; margin-bottom:12px;">
+        <img src="experiments/plots/tradeoff.png" alt="Accuracy vs training time trade-off">
+      </div>
+      <h3>Per-Class AP@50</h3>
+      <table>
+        <tr><th>Exp</th><th>with_mask</th><th>without_mask</th><th>incorrect</th></tr>
+        <tr class="highlight-row"><td><b>E0</b></td><td>95.0%</td><td>83.9%</td><td>77.5%</td></tr>
+        <tr><td>E1</td><td>96.2%</td><td>87.0%</td><td>71.2%</td></tr>
+        <tr><td>E2</td><td>93.8%</td><td>73.9%</td><td>67.5%</td></tr>
+        <tr><td>E3</td><td>90.8%</td><td>69.3%</td><td>54.7%</td></tr>
+        <tr><td>E5</td><td>95.3%</td><td>84.9%</td><td>73.0%</td></tr>
+      </table>
+    </div>
+  </div>
+  <span class="slide-number">8</span>
+</div>
+
+<!-- ==================== SLIDE 9: CONVERGENCE ==================== -->
+<div class="slide">
+  <div class="section-tag">6. Convergencia da Rede</div>
+  <h2>Curvas de Treinamento — Modelo Final (30 epochs)</h2>
+  <div class="two-col" style="gap:16px;">
+    <div class="img-container" style="height:300px;">
+      <img src="experiments/final/results.png" alt="Training curves - final model">
+    </div>
+    <div>
+      <h3>Analise da Convergencia</h3>
+      <ul>
+        <li><span class="green">&#9679;</span> <b>Todas as losses decrescem</b> continuamente ao longo de 30 epochs</li>
+        <li><span class="green">&#9679;</span> <b>Val loss acompanha train loss</b> — sem overfitting</li>
+        <li><span class="green">&#9679;</span> <b>mAP estabiliza</b> nas ultimas epochs — modelo convergiu</li>
+        <li><span class="green">&#9679;</span> <b>Recall subiu +7.5%</b> com mais epochs (70.6% &#8594; 78.1%)</li>
+      </ul>
+
+      <h3 style="margin-top:14px;">Tecnicas Anti-overfitting</h3>
+      <div class="card" style="margin-bottom:8px; padding:10px 14px;">
+        <p style="font-size:12px;"><b>Transfer Learning</b> — 349 camadas pre-treinadas (COCO, 330K imgs)</p>
+      </div>
+      <div class="card" style="margin-bottom:8px; padding:10px 14px;">
+        <p style="font-size:12px;"><b>Data Augmentation</b> — Mosaic, flip, scale (+/-50%), HSV, erasing (40%)</p>
+      </div>
+      <div class="card" style="padding:10px 14px;">
+        <p style="font-size:12px;"><b>Early Stopping</b> — patience=10 epochs sem melhoria</p>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">9</span>
+</div>
+
+<!-- ==================== SLIDE 10: RESULTS - METRICS ==================== -->
+<div class="slide">
+  <div class="section-tag">7. Analise de Resultados</div>
+  <h2>Metricas de Desempenho — Modelo Final</h2>
   <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; margin-bottom:16px;">
-    <div class="stat-card"><div class="value">74.5%</div><div class="label">mAP@0.5</div></div>
-    <div class="stat-card"><div class="value">48.6%</div><div class="label">mAP@0.5:0.95</div></div>
-    <div class="stat-card"><div class="value">76.2%</div><div class="label">Precision</div></div>
-    <div class="stat-card"><div class="value">71.4%</div><div class="label">Recall</div></div>
+    <div class="stat-card"><div class="value">85.0%</div><div class="label">mAP@0.5</div></div>
+    <div class="stat-card"><div class="value">59.1%</div><div class="label">mAP@0.5:0.95</div></div>
+    <div class="stat-card"><div class="value">87.0%</div><div class="label">Precision</div></div>
+    <div class="stat-card"><div class="value">78.1%</div><div class="label">Recall</div></div>
   </div>
   <div class="two-col">
     <div>
@@ -448,81 +555,81 @@
       <div style="margin:10px 0;">
         <div class="bar-row">
           <div class="bar-label" style="width:140px;">with_mask</div>
-          <div class="bar-track"><div class="bar-fill" style="width:93.2%;background:var(--accent-green);">AP 93.2%</div></div>
+          <div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--accent-green);">AP 95.0%</div></div>
         </div>
         <div class="bar-row">
           <div class="bar-label" style="width:140px;">without_mask</div>
-          <div class="bar-track"><div class="bar-fill" style="width:75.1%;background:var(--accent-red);">AP 75.1%</div></div>
+          <div class="bar-track"><div class="bar-fill" style="width:85%;background:var(--accent-red);">AP 85.0%</div></div>
         </div>
         <div class="bar-row">
           <div class="bar-label" style="width:140px;">mask_incorrect</div>
-          <div class="bar-track"><div class="bar-fill" style="width:55.2%;background:var(--accent-yellow);">AP 55.2%</div></div>
+          <div class="bar-track"><div class="bar-fill" style="width:75.1%;background:var(--accent-yellow);">AP 75.1%</div></div>
         </div>
       </div>
       <table style="margin-top:8px;">
         <tr><th>Classe</th><th>Precision</th><th>Recall</th><th>AP@0.5</th></tr>
-        <tr><td><span class="green">&#9679;</span> with_mask</td><td>0.890</td><td>0.901</td><td><b>0.932</b></td></tr>
-        <tr><td><span class="red">&#9679;</span> without_mask</td><td>0.791</td><td>0.686</td><td><b>0.751</b></td></tr>
-        <tr><td><span class="yellow">&#9679;</span> mask_incorrect</td><td>0.604</td><td>0.556</td><td><b>0.552</b></td></tr>
+        <tr><td><span class="green">&#9679;</span> with_mask</td><td>0.911</td><td>0.913</td><td><b>0.950</b></td></tr>
+        <tr><td><span class="red">&#9679;</span> without_mask</td><td>0.868</td><td>0.754</td><td><b>0.850</b></td></tr>
+        <tr><td><span class="yellow">&#9679;</span> mask_incorrect</td><td>0.832</td><td>0.677</td><td><b>0.751</b></td></tr>
       </table>
     </div>
     <div>
       <h3>Curva Precision-Recall</h3>
       <div class="img-container" style="height:255px;">
-        <img src="results/train/BoxPR_curve.png" alt="PR Curve">
+        <img src="experiments/final/BoxPR_curve.png" alt="PR Curve">
       </div>
     </div>
   </div>
-  <span class="slide-number">8</span>
+  <span class="slide-number">10</span>
 </div>
 
-<!-- ==================== SLIDE 9: CONFUSION MATRIX ==================== -->
+<!-- ==================== SLIDE 11: CONFUSION MATRIX ==================== -->
 <div class="slide">
-  <div class="section-tag">6. Análise de Resultados</div>
-  <h2>Matriz de Confusão</h2>
+  <div class="section-tag">7. Analise de Resultados</div>
+  <h2>Matriz de Confusao</h2>
   <div class="two-col" style="gap:20px;">
     <div class="img-container" style="height:360px;">
-      <img src="results/train/confusion_matrix_normalized.png" alt="Confusion Matrix">
+      <img src="experiments/final/confusion_matrix_normalized.png" alt="Confusion Matrix">
     </div>
     <div>
-      <h3>Análise dos Erros</h3>
+      <h3>Analise dos Erros</h3>
       <div class="card" style="margin-bottom:10px; border-left:3px solid var(--accent-green); padding:12px 14px;">
-        <p><b>with_mask: 96% acerto</b></p>
-        <p class="small">Excelente — quase sem confusão</p>
+        <p><b>with_mask: alta confianca</b></p>
+        <p class="small">Classe dominante (3.232 amostras) — modelo aprende muito bem</p>
       </div>
       <div class="card" style="margin-bottom:10px; border-left:3px solid var(--accent-red); padding:12px 14px;">
-        <p><b>without_mask: 83% acerto</b></p>
-        <p class="small">9% confundido com with_mask (rosto parcialmente coberto)</p>
+        <p><b>without_mask: bom desempenho</b></p>
+        <p class="small">AP subiu de 75.1% para 85.0% com resolucao 640 e mais epochs</p>
       </div>
       <div class="card" style="margin-bottom:10px; border-left:3px solid var(--accent-yellow); padding:12px 14px;">
-        <p><b>mask_incorrect: 41% acerto</b></p>
-        <p class="small">50% confundido com with_mask — visualmente muito similares</p>
+        <p><b>mask_incorrect: desafio principal</b></p>
+        <p class="small">AP 75.1% — confusao com with_mask (visualmente similares)</p>
       </div>
       <div class="card" style="border-left:3px solid var(--text-dim); padding:12px 14px;">
         <p><b>Principal causa de erro:</b></p>
-        <p class="small">Máscara incorreta (abaixo do nariz) é visualmente muito parecida com máscara correta, e a classe tem poucas amostras (123 vs 3.232).</p>
+        <p class="small">Mascara incorreta (abaixo do nariz) e visualmente muito parecida com mascara correta, e a classe tem poucas amostras (123 vs 3.232).</p>
       </div>
     </div>
   </div>
-  <span class="slide-number">9</span>
+  <span class="slide-number">11</span>
 </div>
 
-<!-- ==================== SLIDE 10: PREDICTIONS ==================== -->
+<!-- ==================== SLIDE 12: PREDICTIONS ==================== -->
 <div class="slide">
-  <div class="section-tag">6. Análise de Resultados</div>
-  <h2>Exemplos de Predições</h2>
+  <div class="section-tag">7. Analise de Resultados</div>
+  <h2>Exemplos de Predicoes</h2>
   <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; flex:1;">
     <div>
       <div class="img-container" style="height:160px; margin-bottom:6px;">
         <img src="results/predictions/maksssksksss848.jpg" alt="Prediction 1">
       </div>
-      <p class="small" style="text-align:center;"><span class="green">&#10004;</span> Múltiplas masks detectadas</p>
+      <p class="small" style="text-align:center;"><span class="green">&#10004;</span> Multiplas masks detectadas</p>
     </div>
     <div>
       <div class="img-container" style="height:160px; margin-bottom:6px;">
         <img src="results/predictions/maksssksksss425.jpg" alt="Prediction 2">
       </div>
-      <p class="small" style="text-align:center;"><span class="green">&#10004;</span> Confiança alta (0.92)</p>
+      <p class="small" style="text-align:center;"><span class="green">&#10004;</span> Confianca alta (0.92)</p>
     </div>
     <div>
       <div class="img-container" style="height:160px; margin-bottom:6px;">
@@ -539,11 +646,11 @@
   </div>
   <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:8px;">
     <div class="card" style="padding:12px;">
-      <h3><span class="green">&#10004;</span> Predições corretas</h3>
+      <h3><span class="green">&#10004;</span> Predicoes corretas</h3>
       <ul>
-        <li class="small">with_mask detectada com alta confiança (0.6–0.9)</li>
-        <li class="small">Funciona em diferentes cenários (rua, interior, close-up)</li>
-        <li class="small">Detecta múltiplas pessoas na mesma imagem</li>
+        <li class="small">with_mask detectada com alta confianca (0.6-0.9)</li>
+        <li class="small">Funciona em diferentes cenarios (rua, interior, close-up)</li>
+        <li class="small">Detecta multiplas pessoas na mesma imagem</li>
       </ul>
     </div>
     <div class="card" style="padding:12px;">
@@ -551,63 +658,60 @@
       <ul>
         <li class="small">mask_incorrect frequentemente classificada como with_mask</li>
         <li class="small">Rostos muito pequenos/distantes podem ser perdidos</li>
-        <li class="small">Oclusão parcial reduz confiança da detecção</li>
+        <li class="small">Oclusao parcial reduz confianca da deteccao</li>
       </ul>
     </div>
   </div>
-  <span class="slide-number">10</span>
+  <span class="slide-number">12</span>
 </div>
 
-<!-- ==================== SLIDE 11: CONCLUSION ==================== -->
+<!-- ==================== SLIDE 13: CONCLUSION ==================== -->
 <div class="slide">
-  <div class="section-tag">Conclusão</div>
-  <h2>Análise Crítica e Melhorias</h2>
+  <div class="section-tag">Conclusao</div>
+  <h2>Analise Critica e Melhorias</h2>
   <div class="two-col">
     <div>
       <h3><span class="green">&#10004;</span> Pontos Fortes</h3>
       <ul>
-        <li>Alta performance em with_mask (<b>93.2% AP</b>)</li>
+        <li><b>Metodologia rigorosa</b> — 6 experimentos com variavel controlada</li>
+        <li>Cada escolha justificada com dados experimentais</li>
+        <li>Alta performance em with_mask (<b>95.0% AP</b>)</li>
         <li>Transfer learning eficaz com apenas <b>853 imagens</b></li>
-        <li>Pipeline completo e <b>reprodutível</b></li>
-        <li>Inferência rápida (~67ms/img CPU), viável para tempo real com GPU</li>
+        <li>Pipeline completo e <b>reprodutivel</b></li>
         <li>Sem overfitting — val loss acompanha train loss</li>
       </ul>
 
-      <h3 style="margin-top:16px;"><span class="red">&#10008;</span> Limitações</h3>
+      <h3 style="margin-top:16px;"><span class="red">&#10008;</span> Limitacoes</h3>
       <ul>
         <li><b>Desbalanceamento</b> — mask_incorrect com apenas 3% dos dados</li>
-        <li><b>Confusão visual</b> entre mask_incorrect e with_mask</li>
-        <li><b>CPU only</b> — limitou epochs e resolução</li>
+        <li><b>Confusao visual</b> entre mask_incorrect e with_mask</li>
         <li><b>Dataset pequeno</b> — 853 imagens</li>
       </ul>
     </div>
     <div>
-      <h3>&#128161; Melhorias Propostas</h3>
+      <h3>Melhorias Propostas</h3>
       <div class="card" style="margin-bottom:8px; padding:10px 14px;">
-        <p style="font-size:12px;"><b>1. Oversampling</b> — Aumentar amostras de mask_incorrect com augmentation específico</p>
+        <p style="font-size:12px;"><b>1. Oversampling</b> — Aumentar amostras de mask_incorrect com augmentation especifico</p>
       </div>
       <div class="card" style="margin-bottom:8px; padding:10px 14px;">
-        <p style="font-size:12px;"><b>2. GPU Training</b> — Mais epochs (50-100), resolução 640px, modelo YOLOv8s</p>
+        <p style="font-size:12px;"><b>2. Focal Loss</b> — Peso maior para classes raras durante treinamento</p>
       </div>
       <div class="card" style="margin-bottom:8px; padding:10px 14px;">
-        <p style="font-size:12px;"><b>3. Focal Loss</b> — Peso maior para classes raras durante treinamento</p>
+        <p style="font-size:12px;"><b>3. Mais dados</b> — Coletar imagens adicionais de mask_incorrect</p>
       </div>
       <div class="card" style="margin-bottom:8px; padding:10px 14px;">
-        <p style="font-size:12px;"><b>4. Mais dados</b> — Coletar imagens adicionais de mask_incorrect</p>
-      </div>
-      <div class="card" style="padding:10px 14px;">
-        <p style="font-size:12px;"><b>5. Detecção em vídeo</b> — Aplicar em stream de câmera em tempo real</p>
+        <p style="font-size:12px;"><b>4. Deteccao em video</b> — Aplicar em stream de camera em tempo real</p>
       </div>
 
       <div style="margin-top:16px; text-align:center;">
         <div class="stat-card" style="display:inline-block; padding:12px 24px;">
-          <div class="value" style="font-size:24px;">74.5% mAP</div>
-          <div class="label">Resultado Final</div>
+          <div class="value" style="font-size:24px;">85.0% mAP</div>
+          <div class="label">Resultado Final (30 epochs)</div>
         </div>
       </div>
     </div>
   </div>
-  <span class="slide-number">11</span>
+  <span class="slide-number">13</span>
 </div>
 
 </div><!-- /deck -->
@@ -615,8 +719,8 @@
 <!-- NAVIGATION -->
 <div class="nav">
   <button onclick="prev()" title="Anterior">&#9664;</button>
-  <span class="counter" id="counter">1 / 11</span>
-  <button onclick="next()" title="Próximo">&#9654;</button>
+  <span class="counter" id="counter">1 / 13</span>
+  <button onclick="next()" title="Proximo">&#9654;</button>
 </div>
 
 <script>

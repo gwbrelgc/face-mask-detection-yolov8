@@ -1,0 +1,6 @@
+E0 = Baseline (YOLOv8n, 640, defaults)
+E1 = Model: YOLOv8s (Small)
+E2 = Resolution: 416x416
+E3 = Resolution: 320x320
+E4 = Learning rate: 0.001
+E5 = Augmentation: mosaic disabled

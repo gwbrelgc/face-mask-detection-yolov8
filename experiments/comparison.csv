@@ -1,0 +1,7 @@
+name,desc,var,model,imgsz,lr0,mosaic,mAP50,mAP50_95,precision,recall,train_min,AP50_with_mask,AP50_without_mask,AP50_mask_weared_incorrect
+exp0_baseline,"Baseline (YOLOv8n, 640, defaults)",-,yolov8n.pt,640,0.01,1.0,0.855,0.579,0.9237,0.706,3.1,0.9504,0.8393,0.7752
+exp1_model_small,Model: YOLOv8s (Small),model,yolov8s.pt,640,0.01,1.0,0.8481,0.586,0.8518,0.7852,3.8,0.9623,0.8701,0.7117
+exp2_imgsz_416,Resolution: 416x416,imgsz,yolov8n.pt,416,0.01,1.0,0.7841,0.5202,0.895,0.6505,2.3,0.938,0.7392,0.675
+exp3_imgsz_320,Resolution: 320x320,imgsz,yolov8n.pt,320,0.01,1.0,0.7157,0.453,0.842,0.6348,1.8,0.9077,0.6925,0.5469
+exp4_lr_low,Learning rate: 0.001,lr0,yolov8n.pt,640,0.001,1.0,0.855,0.579,0.9237,0.706,3.0,0.9504,0.8393,0.7752
+exp5_no_mosaic,Augmentation: mosaic disabled,mosaic,yolov8n.pt,640,0.01,0.0,0.8437,0.566,0.8367,0.7912,2.8,0.9527,0.8486,0.7297

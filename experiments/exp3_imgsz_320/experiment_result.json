@@ -1,0 +1,18 @@
+{
+  "name": "exp3_imgsz_320",
+  "desc": "Resolution: 320x320",
+  "var": "imgsz",
+  "model": "yolov8n.pt",
+  "imgsz": 320,
+  "epochs": 15,
+  "lr0": 0.01,
+  "mosaic": 1.0,
+  "mAP50": 0.7157,
+  "mAP50_95": 0.453,
+  "precision": 0.842,
+  "recall": 0.6348,
+  "train_min": 1.8,
+  "AP50_with_mask": 0.9077,
+  "AP50_without_mask": 0.6925,
+  "AP50_mask_weared_incorrect": 0.5469
+}

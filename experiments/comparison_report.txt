@@ -1,0 +1,28 @@
+===============================================================================================
+EXPERIMENTAL COMPARISON — Face Mask Detection with YOLOv8
+===============================================================================================
+
+Baseline config: {'model': 'yolov8n.pt', 'epochs': 15, 'imgsz': 640, 'batch': 8, 'lr0': 0.01, 'mosaic': 1.0}
+Dataset: 853 images (682 train / 171 val), 3 classes
+Method: vary ONE parameter at a time from baseline
+
+#    Description                          Var        mAP@50  mAP@.5:.95    Prec     Rec    Time
+-----------------------------------------------------------------------------------------------
+E0   Baseline (YOLOv8n, 640, defaults)    -          0.8550      0.5790  0.9237  0.7060      3m
+E1   Model: YOLOv8s (Small)               model      0.8481      0.5860  0.8518  0.7852      4m
+E2   Resolution: 416x416                  imgsz      0.7841      0.5202  0.8950  0.6505      2m
+E3   Resolution: 320x320                  imgsz      0.7157      0.4530  0.8420  0.6348      2m
+E4   Learning rate: 0.001                 lr0        0.8550      0.5790  0.9237  0.7060      3m
+E5   Augmentation: mosaic disabled        mosaic     0.8437      0.5660  0.8367  0.7912      3m
+
+>>> Best mAP@50: exp0_baseline (0.8550)
+
+Per-class AP@50:
+#       with_mask   without_mask    incorrect
+---------------------------------------------
+E0         0.9504         0.8393       0.7752
+E1         0.9623         0.8701       0.7117
+E2         0.9380         0.7392       0.6750
+E3         0.9077         0.6925       0.5469
+E4         0.9504         0.8393       0.7752
+E5         0.9527         0.8486       0.7297

@@ -1,0 +1,18 @@
+{
+  "name": "exp2_imgsz_416",
+  "desc": "Resolution: 416x416",
+  "var": "imgsz",
+  "model": "yolov8n.pt",
+  "imgsz": 416,
+  "epochs": 15,
+  "lr0": 0.01,
+  "mosaic": 1.0,
+  "mAP50": 0.7841,
+  "mAP50_95": 0.5202,
+  "precision": 0.895,
+  "recall": 0.6505,
+  "train_min": 2.3,
+  "AP50_with_mask": 0.938,
+  "AP50_without_mask": 0.7392,
+  "AP50_mask_weared_incorrect": 0.675
+}

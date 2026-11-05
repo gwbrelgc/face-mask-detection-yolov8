@@ -1,0 +1,18 @@
+{
+  "name": "exp4_lr_low",
+  "desc": "Learning rate: 0.001",
+  "var": "lr0",
+  "model": "yolov8n.pt",
+  "imgsz": 640,
+  "epochs": 15,
+  "lr0": 0.001,
+  "mosaic": 1.0,
+  "mAP50": 0.855,
+  "mAP50_95": 0.579,
+  "precision": 0.9237,
+  "recall": 0.706,
+  "train_min": 3.0,
+  "AP50_with_mask": 0.9504,
+  "AP50_without_mask": 0.8393,
+  "AP50_mask_weared_incorrect": 0.7752
+}

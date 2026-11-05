@@ -1,0 +1,18 @@
+{
+  "name": "exp1_model_small",
+  "desc": "Model: YOLOv8s (Small)",
+  "var": "model",
+  "model": "yolov8s.pt",
+  "imgsz": 640,
+  "epochs": 15,
+  "lr0": 0.01,
+  "mosaic": 1.0,
+  "mAP50": 0.8481,
+  "mAP50_95": 0.586,
+  "precision": 0.8518,
+  "recall": 0.7852,
+  "train_min": 3.8,
+  "AP50_with_mask": 0.9623,
+  "AP50_without_mask": 0.8701,
+  "AP50_mask_weared_incorrect": 0.7117
+}

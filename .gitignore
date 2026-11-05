@@ -13,6 +13,13 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 
+# Archives
+archive.zip
+
+# Experiment caches
+experiments/*/labels*.cache
+experiments/*_val/
+
 # OS
 Thumbs.db
 .DS_Store
